@@ -59,9 +59,9 @@ public class DashboardServlet extends HttpServlet {
         try {
             // Get student statistics
             int totalStudents = studentDAO.getTotalStudents();
-            int activeStudents = studentDAO.getStudentsByStatus("active");
-            int inactiveStudents = studentDAO.getStudentsByStatus("inactive");
-            int graduatedStudents = studentDAO.getStudentsByStatus("graduated");
+            int activeStudents = studentDAO.getStudentsByStatus("active").size();
+            int inactiveStudents = studentDAO.getStudentsByStatus("inactive").size();
+            int graduatedStudents = studentDAO.getStudentsByStatus("graduated").size();
 
             data.put("totalStudents", totalStudents);
             data.put("activeStudents", activeStudents);
