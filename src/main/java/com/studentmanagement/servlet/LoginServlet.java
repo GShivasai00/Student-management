@@ -50,13 +50,6 @@ public class LoginServlet extends HttpServlet {
             // Get user from database
             User user = userDAO.getUserByUsername(username);
 
-            System.out.println("Login attempt - Username: " + username);
-            System.out.println("User found: " + (user != null));
-            if (user != null) {
-                System.out.println("Stored password: " + user.getPassword());
-                System.out.println("Input password: " + password);
-            }
-
             if (user != null && verifyPassword(password, user.getPassword())) {
                 // Login successful
                 HttpSession session = request.getSession();
@@ -64,12 +57,10 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("username", user.getUsername());
                 session.setAttribute("role", user.getRole());
 
-                System.out.println("Login successful for user: " + username);
                 // Redirect to dashboard
                 response.sendRedirect(request.getContextPath() + "/dashboard");
             } else {
                 // Login failed
-                System.out.println("Login failed for user: " + username);
                 request.setAttribute("error", "Invalid username or password");
                 request.getRequestDispatcher("/login.jsp").forward(request, response);
             }
@@ -77,7 +68,7 @@ public class LoginServlet extends HttpServlet {
         } catch (Exception e) {
             System.err.println("Login error: " + e.getMessage());
             e.printStackTrace();
-            request.setAttribute("error", "An error occurred during login");
+            request.setAttribute("error", "An error occurred during login. Please try again.");
             request.getRequestDispatcher("/login.jsp").forward(request, response);
         }
     }
@@ -86,23 +77,13 @@ public class LoginServlet extends HttpServlet {
      * Verify password against stored hash
      */
     private boolean verifyPassword(String inputPassword, String storedPassword) {
-        // For demo mode, use simple string comparison
-        if (storedPassword.equals("admin123") || storedPassword.equals("user123")) {
-            return inputPassword.equals(storedPassword);
-        }
-
-        // For demo mode users, also check plain text passwords
-        if (inputPassword.equals("admin123") && storedPassword.equals("admin123")) {
-            return true;
-        }
-        if (inputPassword.equals("user123") && storedPassword.equals("user123")) {
-            return true;
-        }
-
         try {
+            // Hash the input password
             String hashedInput = hashPassword(inputPassword);
+            
+            // Compare with stored password
             return hashedInput.equals(storedPassword);
-        } catch (NoSuchAlgorithmException e) {
+        } catch (Exception e) {
             System.err.println("Password verification error: " + e.getMessage());
             return false;
         }
@@ -114,8 +95,8 @@ public class LoginServlet extends HttpServlet {
     private String hashPassword(String password) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         byte[] hash = md.digest(password.getBytes());
+        
         StringBuilder hexString = new StringBuilder();
-
         for (byte b : hash) {
             String hex = Integer.toHexString(0xff & b);
             if (hex.length() == 1) {
@@ -123,7 +104,7 @@ public class LoginServlet extends HttpServlet {
             }
             hexString.append(hex);
         }
-
+        
         return hexString.toString();
     }
 }

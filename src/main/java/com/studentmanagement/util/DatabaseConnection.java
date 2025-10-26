@@ -10,9 +10,15 @@ import java.sql.SQLException;
  */
 public class DatabaseConnection {
 
+    // XAMPP Default Settings (uncomment these for XAMPP)
     private static final String DB_URL = "jdbc:mysql://localhost:3306/student_management?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
     private static final String DB_USERNAME = "root";
-    private static final String DB_PASSWORD = ""; // Empty password for demo
+    private static final String DB_PASSWORD = ""; // Empty password for XAMPP default
+
+    // Docker/MySQL Server Settings (uncomment these for Docker or MySQL Server)
+    // private static final String DB_URL = "jdbc:mysql://localhost:3306/student_management?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
+    // private static final String DB_USERNAME = "studentuser";
+    // private static final String DB_PASSWORD = "studentpass123";
 
     private static DatabaseConnection instance;
     private Connection connection;
@@ -21,8 +27,9 @@ public class DatabaseConnection {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             this.connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+            System.out.println("✅ Database connected successfully!");
         } catch (ClassNotFoundException | SQLException e) {
-            System.err.println("Database connection failed: " + e.getMessage());
+            System.err.println("❌ Database connection failed: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -82,10 +89,13 @@ public class DatabaseConnection {
     public boolean testConnection() {
         try {
             Connection conn = getConnection();
-            return conn != null && !conn.isClosed();
+            if (conn != null && !conn.isClosed()) {
+                System.out.println("✅ Database connection test successful!");
+                return true;
+            }
         } catch (SQLException e) {
-            System.err.println("Database connection test failed: " + e.getMessage());
-            return false;
+            System.err.println("❌ Database connection test failed: " + e.getMessage());
         }
+        return false;
     }
 }
