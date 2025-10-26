@@ -13,7 +13,7 @@ public class DatabaseConnection {
     // MySQL Server Settings (for your existing MySQL installation)
     private static final String DB_URL = "jdbc:mysql://localhost:3306/student_management?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
     private static final String DB_USERNAME = "root";
-    private static final String DB_PASSWORD = ""; // Enter your MySQL root password here
+    private static final String DB_PASSWORD = "YOUR_MYSQL_PASSWORD_HERE"; // Replace with your actual MySQL password
 
     private static DatabaseConnection instance;
     private Connection connection;
