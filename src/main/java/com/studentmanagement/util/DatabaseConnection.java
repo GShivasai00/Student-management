@@ -10,15 +10,10 @@ import java.sql.SQLException;
  */
 public class DatabaseConnection {
 
-    // XAMPP Default Settings (uncomment these for XAMPP)
+    // MySQL Server Settings (for your existing MySQL installation)
     private static final String DB_URL = "jdbc:mysql://localhost:3306/student_management?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
     private static final String DB_USERNAME = "root";
-    private static final String DB_PASSWORD = ""; // Empty password for XAMPP default
-
-    // Docker/MySQL Server Settings (uncomment these for Docker or MySQL Server)
-    // private static final String DB_URL = "jdbc:mysql://localhost:3306/student_management?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
-    // private static final String DB_USERNAME = "studentuser";
-    // private static final String DB_PASSWORD = "studentpass123";
+    private static final String DB_PASSWORD = ""; // Enter your MySQL root password here
 
     private static DatabaseConnection instance;
     private Connection connection;
